@@ -1,5 +1,25 @@
-const APIKey = "d146d2c1e619c5bd4411afef986e631c";
+import axios from "axios";
 
-const ExampleCall = "api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=d146d2c1e619c5bd4411afef986e631c"
 
-const ExampleAnswer = { "coord": { "lon": -0.13, "lat": 51.51 }, "weather": [{ "id": 300, "main": "Drizzle", "description": "light intensity drizzle", "icon": "09d" }], "base": "stations", "main": { "temp": 280.32, "pressure": 1012, "humidity": 81, "temp_min": 279.15, "temp_max": 281.15 }, "visibility": 10000, "wind": { "speed": 4.1, "deg": 80 }, "clouds": { "all": 90 }, "dt": 1485789600, "sys": { "type": 1, "id": 5091, "message": 0.0103, "country": "GB", "sunrise": 1485762037, "sunset": 1485794875 }, "id": 2643743, "name": "London", "cod": 200 }
+export const APIKey: string = "d146d2c1e619c5bd4411afef986e631c";
+
+export const ExampleCall = "http://api.openweathermap.org/data/2.5/weather?q=paris,fr&APPID=d146d2c1e619c5bd4411afef986e631c"
+
+export const ExampleAnswer = { "coord": { "lon": 2.35, "lat": 48.86 }, "weather": [{ "id": 741, "main": "Fog", "description": "fog", "icon": "50n" }], "base": "stations", "main": { "temp": 272.13, "pressure": 1021, "humidity": 92, "temp_min": 271.15, "temp_max": 273.71 }, "visibility": 550, "wind": { "speed": 1.5, "deg": 340 }, "clouds": { "all": 90 }, "dt": 1575499533, "sys": { "type": 1, "id": 6540, "country": "FR", "sunrise": 1575444365, "sunset": 1575474935 }, "timezone": 3600, "id": 2988507, "name": "Paris", "cod": 200 }
+
+interface ServerResponse {
+  data: ServerData
+}
+
+interface ServerData {
+
+}
+export const GetData = (url: string): any => {
+  if (url)
+    return axios.get<ServerData>(url).then(response => {
+      return response.data
+    })
+      .catch(error => {
+        return (error)
+      });
+}
