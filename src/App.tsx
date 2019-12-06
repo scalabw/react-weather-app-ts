@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { GetData } from './API';
+import WeatherCard from './components/WeatherCard';
 
 const App: React.FC = () => {
   const [weatherData, setWeatherData] = useState(null)
@@ -17,6 +18,8 @@ const App: React.FC = () => {
         const data = await GetData(url);
         setWeatherData(data);
       } catch (error) {
+        console.log(error)
+        setWeatherData(null);
         setIsError(true);
       }
       setIsLoading(false);
@@ -37,11 +40,14 @@ const App: React.FC = () => {
           setUrl(`http://api.openweathermap.org/data/2.5/weather?q=${city},fr&APPID=d146d2c1e619c5bd4411afef986e631c`)
         }
       ></button>
-      {isError && <div>Something went wrong ...</div>}
+      {isError && <div>City not found</div>}
       {isLoading ? (
         <div>Loading ...</div>
       ) : (
-          weatherData && <p>{JSON.stringify(weatherData)}</p>
+          <>
+            <p>{JSON.stringify(weatherData)}</p>
+            <WeatherCard weatherData={weatherData} />
+          </>
         )}
     </div>
   );

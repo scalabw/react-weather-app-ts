@@ -20,6 +20,6 @@ export const GetData = (url: string): any => {
       return response.data
     })
       .catch(error => {
-        return (error)
+        throw (error)
       });
 }
