@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import { GetData } from './API';
 import WeatherCard from './components/WeatherCard';
-
+import "bootstrap/dist/css/bootstrap.min.css";
+import "shards-ui/dist/css/shards.min.css"
 const App: React.FC = () => {
   const [weatherData, setWeatherData] = useState(null)
   const [city, setCity] = useState('Paris');
@@ -37,7 +38,7 @@ const App: React.FC = () => {
       <button
         type="button"
         onClick={() =>
-          setUrl(`http://api.openweathermap.org/data/2.5/weather?q=${city},fr&APPID=d146d2c1e619c5bd4411afef986e631c`)
+          setUrl(`http://api.openweathermap.org/data/2.5/weather?q=${city},fr&APPID=d146d2c1e619c5bd4411afef986e631c&units=metric`)
         }
       ></button>
       {isError && <div>City not found</div>}
@@ -45,7 +46,6 @@ const App: React.FC = () => {
         <div>Loading ...</div>
       ) : (
           <>
-            <p>{JSON.stringify(weatherData)}</p>
             <WeatherCard weatherData={weatherData} />
           </>
         )}
