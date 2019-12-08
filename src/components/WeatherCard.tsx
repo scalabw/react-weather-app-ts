@@ -1,4 +1,4 @@
-import { WEATHER } from '../types/weather'
+import { APIWEATHER, ICONEWEATHER } from '../types/weather'
 import ReactAnimatedWeather from 'react-animated-weather';
 import React from 'react';
 import {
@@ -19,8 +19,26 @@ const WeatherCard = (props: any) => {
 
   const getIcone = (weatherType) => {
     switch (weatherType) {
-      case WEATHER.CLOUDS:
-        return ('CLOUDY')
+      case APIWEATHER.CLOUDS:
+        return ICONEWEATHER.CLOUDY
+      case APIWEATHER.RAIN:
+        return ICONEWEATHER.RAIN
+      case APIWEATHER.MIST:
+      case APIWEATHER.SMOKE:
+      case APIWEATHER.HAZE:
+      case APIWEATHER.DUST:
+      case APIWEATHER.FOG:
+      case APIWEATHER.SAND:
+      case APIWEATHER.ASH:
+        return ICONEWEATHER.FOG
+      case APIWEATHER.SQUALL:
+        return ICONEWEATHER.WIND
+      case APIWEATHER.SNOW:
+        return ICONEWEATHER.SNOW
+      case APIWEATHER.DRIZZLE:
+        return ICONEWEATHER.SLEET
+      case APIWEATHER.CLEAR:
+        return ICONEWEATHER.CLEARDAY
       default:
         return ''
     }
