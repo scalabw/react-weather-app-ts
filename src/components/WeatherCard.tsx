@@ -1,4 +1,3 @@
-import { APIWEATHER, ICONEWEATHER } from '../types/weather'
 import ReactAnimatedWeather from 'react-animated-weather';
 import React from 'react';
 import {
@@ -9,35 +8,12 @@ import {
   //CardFooter,
   //Button,
 } from "shards-react";
+import { addZero } from '../helpers/time';
+import { getWeatherIcone } from '../helpers/weather';
 
 const WeatherCard = (props: any) => {
 
-  const getWeatherIcone = (weatherType) => {
-    switch (weatherType) {
-      case APIWEATHER.CLOUDS:
-        return ICONEWEATHER.CLOUDY
-      case APIWEATHER.RAIN:
-        return ICONEWEATHER.RAIN
-      case APIWEATHER.MIST:
-      case APIWEATHER.SMOKE:
-      case APIWEATHER.HAZE:
-      case APIWEATHER.DUST:
-      case APIWEATHER.FOG:
-      case APIWEATHER.SAND:
-      case APIWEATHER.ASH:
-        return ICONEWEATHER.FOG
-      case APIWEATHER.SQUALL:
-        return ICONEWEATHER.WIND
-      case APIWEATHER.SNOW:
-        return ICONEWEATHER.SNOW
-      case APIWEATHER.DRIZZLE:
-        return ICONEWEATHER.SLEET
-      case APIWEATHER.CLEAR:
-        return ICONEWEATHER.CLEARDAY
-      default:
-        return ''
-    }
-  }
+
 
   const defaults = {
     icon: getWeatherIcone(props.weatherData && props.weatherData.weather[0].main),
@@ -47,14 +23,14 @@ const WeatherCard = (props: any) => {
   };
 
 
-  const { weatherData, city } = props;
-  console.log(props)
+  const { weatherData } = props;
   return (
     <  >
-      {(weatherData ? <Card className="mt-4 mr-4" >
-        <CardBody>
+
+      {(weatherData ? <Card className="mt-3 mr-4" >
+        <CardBody >
           <CardTitle>
-            <p>{city.name}</p>
+            <p>{`${addZero(new Date(weatherData.dt_txt).getHours())}:${addZero(new Date(weatherData.dt_txt).getMinutes())}`}</p>
           </CardTitle>
           <ReactAnimatedWeather
             icon={defaults.icon}
@@ -64,7 +40,13 @@ const WeatherCard = (props: any) => {
           />
           <p>{weatherData.weather[0].description}
             <br />
-            {weatherData.main.temp}°C</p>
+            {`Temperature: ${weatherData.main.temp}°C`}
+            <br />
+            {`Humidity: ${weatherData.main.humidity}%`}
+            <br />
+            {weatherData.rain ? `Rain: ${weatherData.rain['3h']}mm` : null}
+            <br />
+          </p>
         </CardBody>
       </Card > : null)
       }

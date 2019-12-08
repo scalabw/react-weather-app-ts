@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row } from "shards-react";
+import { Container, Row, Col } from "shards-react";
 import './App.css';
 import { GetData } from './API';
 import WeatherCard from './components/WeatherCard';
+import { Days } from './constants/days';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "shards-ui/dist/css/shards.min.css";
@@ -49,14 +50,22 @@ const App: React.FC = () => {
       {isError && <div>City not found</div>}
       {isLoading ? (
         <div>Loading ...</div>
-      ) : (<Container className="mt-2">
+      ) : (<Container className="mt-1">
         <Row>
-          {weatherData && weatherData!.list && weatherData.list.map((weatherCardData, index) => {
-            return (index % 4 === 0) ?
-              <>  <WeatherCard weatherData={weatherCardData} city={weatherData.city} />  </>
-              : <WeatherCard weatherData={weatherCardData} city={weatherData.city} />
+          {weatherData && weatherData!.list && weatherData.list.map((weatherCardData, index) => (
+            <div key={index}>
+              {index % 8 === 0 ? <> <h2 className="mt-1 pt-2"> {Days[index / 8]}</h2> <Col sm="12" lg="12" md="12">
+                <WeatherCard weatherData={weatherCardData} />
+              </Col> </> :
+                <div className="pt-5">
+                  <Col sm="12" lg="12" md="12" >
+                    <WeatherCard weatherData={weatherCardData} />
+                  </Col>
+                </div>
+              }
 
-          })}
+            </div>
+          ))}
         </Row>
       </Container>
         )}
