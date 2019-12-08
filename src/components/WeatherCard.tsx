@@ -3,21 +3,16 @@ import ReactAnimatedWeather from 'react-animated-weather';
 import React from 'react';
 import {
   Card,
-  //CardHeader,
-  //CardTitle,
+  CardTitle,
   //CardImg,
   CardBody,
   //CardFooter,
   //Button,
-  Container,
-  Row,
-  Col
-
 } from "shards-react";
 
 const WeatherCard = (props: any) => {
 
-  const getIcone = (weatherType) => {
+  const getWeatherIcone = (weatherType) => {
     switch (weatherType) {
       case APIWEATHER.CLOUDS:
         return ICONEWEATHER.CLOUDY
@@ -43,34 +38,37 @@ const WeatherCard = (props: any) => {
         return ''
     }
   }
+
   const defaults = {
-    icon: getIcone(props.weatherData && props.weatherData.weather[0].main),
+    icon: getWeatherIcone(props.weatherData && props.weatherData.weather[0].main),
     color: 'black',
-    size: 150,
+    size: 80,
     animate: true
   };
-  const { weatherData } = props
-  return (
-    <Container >
-      <Row>
-        <Col sm="12" md={{ size: 6, offset: 3 }}>
-          {(weatherData ? <Card style={{
-          }}>
-            <CardBody>
-              <p>{weatherData.name}</p>
-              <ReactAnimatedWeather
-                icon={defaults.icon}
-                color={defaults.color}
-                size={defaults.size}
-                animate={defaults.animate}
-              />
-              <p>{weatherData.weather[0].description}</p>
 
-            </CardBody>
-          </Card > : null)}
-        </Col>
-      </Row>
-    </Container>
+
+  const { weatherData, city } = props;
+  console.log(props)
+  return (
+    <  >
+      {(weatherData ? <Card className="mt-4 mr-4" >
+        <CardBody>
+          <CardTitle>
+            <p>{city.name}</p>
+          </CardTitle>
+          <ReactAnimatedWeather
+            icon={defaults.icon}
+            color={defaults.color}
+            size={defaults.size}
+            animate={defaults.animate}
+          />
+          <p>{weatherData.weather[0].description}
+            <br />
+            {weatherData.main.temp}°C</p>
+        </CardBody>
+      </Card > : null)
+      }
+    </>
   )
 }
 export default WeatherCard;
