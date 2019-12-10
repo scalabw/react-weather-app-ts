@@ -18,7 +18,7 @@ const WeatherCard = (props: any) => {
   const defaults = {
     icon: getWeatherIcone(props.weatherData && props.weatherData.weather[0].main),
     color: 'black',
-    size: 80,
+    size: 120,
     animate: true
   };
 
@@ -27,7 +27,7 @@ const WeatherCard = (props: any) => {
   return (
     <  >
 
-      {(weatherData ? <Card className="mt-3 mr-4" >
+      {(weatherData ? <Card className="mt-3 mr-2 text-center " style={{ minWidth: 210 }}>
         <CardBody >
           <CardTitle>
             <p>{`${addZero(new Date(weatherData.dt_txt).getHours())}:${addZero(new Date(weatherData.dt_txt).getMinutes())}`}</p>
