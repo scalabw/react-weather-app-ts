@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, FormInput, Button } from "shards-react";
+import { Container, Row, Col, FormInput, Button, Card, CardHeader } from "shards-react";
 import './App.css';
 import { GetData } from './API';
 import WeatherCard from './components/WeatherCard';
@@ -31,12 +31,35 @@ const App: React.FC = () => {
     fetchData();
   }, [url]);
 
+  const renderWeather = (list) => {
+    const fiveDays: any[] = [];
+    let row: any[] = [];
+    let daily: any[] = [];
+
+    for (let i = 0; i < list.length; i++) {
+      daily.push(<Col >
+        <WeatherCard weatherData={list[i]} />
+      </Col>)
+      if (daily.length === 4) {
+        row.push(<Row>{daily}</Row>)
+        daily = []
+      }
+      if (row.length === 2) {
+        fiveDays.push(<Card className="mt-2 mb-2 w-100" style={{ opacity: 0.89 }}> <CardHeader><h2 className="mt-2 pt-1">{Days[fiveDays.length]}</h2></CardHeader>{row}</Card>)
+        row = []
+      }
+    }
+    return fiveDays
+  }
+
   return (
-    <div className="App">
+    <div className="App bg-gradient-info">
       <Container className="w-25">
-        <FormInput placeholder="City Name" className="mb-2 mt-2" type="text"
+        <FormInput placeholder="City Name" className="mb-2 pt-2" type="text"
           value={city}
-          onChange={event => setCity(event.target.value)} />
+          onChange={event => setCity(event.target.value)}
+          style={{ opacity: 0.89 }}
+        />
 
         <Button
           type="button"
@@ -46,30 +69,19 @@ const App: React.FC = () => {
 
         >Search</Button>
       </Container>
-
+      {
+        !weatherData && <Container className="bg-gradient-info" style={{ height: '100px' }} />
+      }
       {isError && <div>City not found</div>}
       {isLoading ? (
         <div>Loading ...</div>
-      ) : (<Container className="mt-1">
+      ) : (<Container className="mt-1 pb-2 h-100">
         <Row>
-          {weatherData && weatherData!.list && weatherData.list.map((weatherCardData, index) => (
-            <div key={index}>
-              {index % 8 === 0 ? <> <h2 className="mt-2 pt-1"> {Days[index / 8]}</h2> <Col sm="12" lg="12" md="12">
-                <WeatherCard weatherData={weatherCardData} />
-              </Col> </> :
-                <div className="pt-5">
-                  <Col sm="12" lg="12" md="12" >
-                    <WeatherCard weatherData={weatherCardData} />
-                  </Col>
-                </div>
-              }
-
-            </div>
-          ))}
+          {weatherData && weatherData!.list && renderWeather(weatherData.list)}
         </Row>
       </Container>
         )}
-    </div>
+    </div >
   );
 }
 
