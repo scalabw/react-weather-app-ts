@@ -59,6 +59,11 @@ const App: React.FC = () => {
           value={city}
           onChange={event => setCity(event.target.value)}
           style={{ opacity: 0.89 }}
+          onKeyPress={event => {
+            if (event.key === 'Enter') {
+              setUrl(`http://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=d146d2c1e619c5bd4411afef986e631c&units=metric`)
+            }
+          }}
         />
 
         <Button
