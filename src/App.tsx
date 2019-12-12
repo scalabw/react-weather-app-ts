@@ -72,7 +72,7 @@ const App: React.FC = () => {
       {
         !weatherData && <Container className="bg-gradient-info" style={{ height: '100px' }} />
       }
-      {isError && <div>City not found</div>}
+      {isError && <Card className="mt-2 mb-2 " style={{ opacity: 0.89 }}> <CardHeader><h2 className="mt-2 pt-1">City not found</h2></CardHeader></Card>}
       {isLoading ? (
         <div>Loading ...</div>
       ) : (<Container className="mt-1 pb-2 h-100">
