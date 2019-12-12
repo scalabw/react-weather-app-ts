@@ -27,7 +27,7 @@ const WeatherCard = (props: any) => {
   return (
     <  >
 
-      {(weatherData ? <Card className="mt-2 mr-2 ml-2 mb-2 w-90" >
+      {(weatherData ? <Card className="mt-2 mr-2 ml-2 mb-2 " style={{ height: "22em" }} >
         <CardBody >
           <CardTitle>
             <p>{`${addZero(new Date(weatherData.dt_txt).getHours())}:${addZero(new Date(weatherData.dt_txt).getMinutes())}`}</p>

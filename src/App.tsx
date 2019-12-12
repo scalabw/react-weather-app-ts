@@ -45,7 +45,7 @@ const App: React.FC = () => {
         daily = []
       }
       if (row.length === 2) {
-        fiveDays.push(<Card className="mt-2 mb-2 w-100" style={{ opacity: 0.89 }}> <CardHeader><h2 className="mt-2 pt-1">{Days[fiveDays.length]}</h2></CardHeader>{row}</Card>)
+        fiveDays.push(<Card className="mt-2 mb-2 w-100" style={{ opacity: 0.89 }}> <CardHeader><h2>{Days[fiveDays.length]}</h2></CardHeader>{row}</Card>)
         row = []
       }
     }
@@ -64,7 +64,7 @@ const App: React.FC = () => {
         <Button
           type="button"
           onClick={() =>
-            setUrl(`http://api.openweathermap.org/data/2.5/forecast?q=${city},fr&APPID=d146d2c1e619c5bd4411afef986e631c&units=metric`)
+            setUrl(`http://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=d146d2c1e619c5bd4411afef986e631c&units=metric`)
           }
 
         >Search</Button>
@@ -72,7 +72,7 @@ const App: React.FC = () => {
       {
         !weatherData && <Container className="bg-gradient-info" style={{ height: '100px' }} />
       }
-      {isError && <Card className="mt-2 mb-2 " style={{ opacity: 0.89 }}> <CardHeader><h2 className="mt-2 pt-1">City not found</h2></CardHeader></Card>}
+      {isError && <Card className="mt-2 mb-2 " style={{ opacity: 0.89 }}> <CardHeader><h2>City not found</h2></CardHeader></Card>}
       {isLoading ? (
         <div>Loading ...</div>
       ) : (<Container className="mt-1 pb-2 h-100">
