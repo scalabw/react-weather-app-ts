@@ -81,9 +81,9 @@ const App: React.FC = () => {
       {
         !fiveDaysWeatherData && <Container className="bg-gradient-info" style={{ height: '100px' }} />
       }
-      {isError && <Card className="mt-2 mb-2 " style={{ opacity: 0.89 }}> <CardHeader><h2>City not found</h2></CardHeader></Card>}
+      {isError && <Card className="mt-2 mb-2" style={{ opacity: 0.89 }}> <CardHeader><h2>City not found</h2></CardHeader></Card>}
       {isLoading ? (
-        <div>Loading ...</div>
+        <Card className="mt-2 mb-2 " style={{ opacity: 0.89 }}> <CardHeader><h2>Loading ...</h2></CardHeader></Card>
       ) : (<Container className="mt-1 pb-2 h-100">
         <Row>
           {fiveDaysWeatherData && fiveDaysWeatherData!.list && renderWeatherCards(fiveDaysWeatherData.list)}
