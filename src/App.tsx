@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, FormInput, Card, CardHeader } from "shards-react";
-import './App.css';
-import { getFiveDaysWeatherData, /* getCurrentDayWeatherData */ } from './API';
-import WeatherCard from './components/WeatherCard';
-import { Days } from './constants/days';
 
+// Import API Calls
+import { getFiveDaysWeatherData } from './API';
+
+// Import Components
+import WeatherCard from './components/WeatherCard';
+
+// Import CSS files
+import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "shards-ui/dist/css/shards.min.css";
+
+//import Constans, Types and Helper Functions
+import { Days } from './constants/days';
 import { WeatherData } from './types/weather';
 import { checkEndOfDay } from './helpers/time';
 
@@ -36,20 +43,20 @@ const App: React.FC = () => {
 
 
 
-  const renderWeather = (list: WeatherData[]) => {
+  const renderWeatherCards = (list: WeatherData[]) => {
     const fiveDays: JSX.Element[] = [];
     let row: JSX.Element[] = [];
     let daily: JSX.Element[] = [];
 
-    for (let i = 0; i < list.length; i++) {
+    for (let index = 0; index < list.length; index++) {
       daily.push(<Col >
-        <WeatherCard weatherData={list[i]} />
+        <WeatherCard weatherData={list[index]} />
       </Col>)
-      if (daily.length === 4 || checkEndOfDay(new Date(list[i].dt_txt))) {
+      if (daily.length === 4 || checkEndOfDay(new Date(list[index].dt_txt))) {
         row.push(<Row>{daily}</Row>)
         daily = []
       }
-      if (row.length === 2 || checkEndOfDay(new Date(list[i].dt_txt))) {
+      if (row.length === 2 || checkEndOfDay(new Date(list[index].dt_txt))) {
         fiveDays.push(<Card className="mt-2 mb-2 w-100" style={{ opacity: 0.89 }}> <CardHeader><h2>{Days[fiveDays.length]}</h2></CardHeader>{row}</Card>)
         row = []
       }
@@ -79,7 +86,7 @@ const App: React.FC = () => {
         <div>Loading ...</div>
       ) : (<Container className="mt-1 pb-2 h-100">
         <Row>
-          {fiveDaysWeatherData && fiveDaysWeatherData!.list && renderWeather(fiveDaysWeatherData.list)}
+          {fiveDaysWeatherData && fiveDaysWeatherData!.list && renderWeatherCards(fiveDaysWeatherData.list)}
         </Row>
       </Container>
         )}

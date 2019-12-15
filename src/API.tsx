@@ -1,20 +1,13 @@
 import axios from "axios";
 
-
+// API Privided by openweathermap 
 export const APIKey: string = "d146d2c1e619c5bd4411afef986e631c";
 
-export const ExampleCall = "http://api.openweathermap.org/data/2.5/weather?q=paris,fr&APPID=d146d2c1e619c5bd4411afef986e631c"
-
-export const ExampleAnswer = { "coord": { "lon": 2.35, "lat": 48.86 }, "weather": [{ "id": 741, "main": "Fog", "description": "fog", "icon": "50n" }], "base": "stations", "main": { "temp": 272.13, "pressure": 1021, "humidity": 92, "temp_min": 271.15, "temp_max": 273.71 }, "visibility": 550, "wind": { "speed": 1.5, "deg": 340 }, "clouds": { "all": 90 }, "dt": 1575499533, "sys": { "type": 1, "id": 6540, "country": "FR", "sunrise": 1575444365, "sunset": 1575474935 }, "timezone": 3600, "id": 2988507, "name": "Paris", "cod": 200 }
-
-interface ServerResponse {
-  data: ServerData
-}
-
 interface ServerData {
-
+  data: any
 }
 
+// Get the data for the 5 next days based on the city queried
 export const getFiveDaysWeatherData = (cityName: string): Promise<ServerData> | null => {
   if (cityName)
     return axios.get<ServerData>(`http://api.openweathermap.org/data/2.5/forecast?q=${cityName}&APPID=d146d2c1e619c5bd4411afef986e631c&units=metric`).then(response => {

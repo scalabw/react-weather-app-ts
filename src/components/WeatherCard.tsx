@@ -5,12 +5,16 @@ import {
   CardTitle,
   CardBody,
 } from "shards-react";
+
+// Imports Helpers
 import { getFormatedHourAndMinutedFromDate } from '../helpers/time';
 import { getWeatherIcone } from '../helpers/weather';
 
+// this component render all the weather informations provided by the API for a given time
 const WeatherCard = (props: any) => {
 
-  const defaults = {
+  // Props required to render the reactAnimatedWeather Component
+  const reactAnimatedWeatherProps = {
     icon: getWeatherIcone(props.weatherData && props.weatherData.weather[0].main),
     color: 'black',
     size: 120,
@@ -26,10 +30,10 @@ const WeatherCard = (props: any) => {
             <p>{`${getFormatedHourAndMinutedFromDate(new Date(weatherData.dt_txt))}`}</p>
           </CardTitle>
           <ReactAnimatedWeather
-            icon={defaults.icon}
-            color={defaults.color}
-            size={defaults.size}
-            animate={defaults.animate}
+            icon={reactAnimatedWeatherProps.icon}
+            color={reactAnimatedWeatherProps.color}
+            size={reactAnimatedWeatherProps.size}
+            animate={reactAnimatedWeatherProps.animate}
           />
           <p>{weatherData.weather[0].description}
             <br />
