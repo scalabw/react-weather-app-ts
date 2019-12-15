@@ -14,12 +14,25 @@ interface ServerResponse {
 interface ServerData {
 
 }
-export const GetData = (url: string): any => {
-  if (url)
-    return axios.get<ServerData>(url).then(response => {
+
+export const getFiveDaysWeatherData = (cityName: string): Promise<ServerData> | null => {
+  if (cityName)
+    return axios.get<ServerData>(`http://api.openweathermap.org/data/2.5/forecast?q=${cityName}&APPID=d146d2c1e619c5bd4411afef986e631c&units=metric`).then(response => {
       return response.data
     })
       .catch(error => {
         throw (error)
       });
+  return null
+}
+
+export const getCurrentDayWeatherData = (cityName: string): Promise<ServerData> | null => {
+  if (cityName)
+    return axios.get<ServerData>(`http://api.openweathermap.org/data/2.5/weather?q=${cityName}&APPID=d146d2c1e619c5bd4411afef986e631c&units=metric`).then(response => {
+      return response.data
+    })
+      .catch(error => {
+        throw (error)
+      });
+  return null
 }

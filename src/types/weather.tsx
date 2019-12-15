@@ -28,3 +28,8 @@ export enum ICONEWEATHER {
   WIND = "WIND",
   FOG = "FOG"
 }
+
+export interface WeatherData {
+  dt: number;
+  dt_txt: string;
+}

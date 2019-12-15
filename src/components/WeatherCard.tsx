@@ -3,17 +3,12 @@ import React from 'react';
 import {
   Card,
   CardTitle,
-  //CardImg,
   CardBody,
-  //CardFooter,
-  //Button,
 } from "shards-react";
-import { addZero } from '../helpers/time';
+import { getFormatedHourAndMinutedFromDate } from '../helpers/time';
 import { getWeatherIcone } from '../helpers/weather';
 
 const WeatherCard = (props: any) => {
-
-
 
   const defaults = {
     icon: getWeatherIcone(props.weatherData && props.weatherData.weather[0].main),
@@ -22,15 +17,13 @@ const WeatherCard = (props: any) => {
     animate: true
   };
 
-
   const { weatherData } = props;
   return (
-    <  >
-
+    <>
       {(weatherData ? <Card className="mt-2 mr-2 ml-2 mb-2 " style={{ height: "22em" }} >
         <CardBody >
           <CardTitle>
-            <p>{`${addZero(new Date(weatherData.dt_txt).getHours())}:${addZero(new Date(weatherData.dt_txt).getMinutes())}`}</p>
+            <p>{`${getFormatedHourAndMinutedFromDate(new Date(weatherData.dt_txt))}`}</p>
           </CardTitle>
           <ReactAnimatedWeather
             icon={defaults.icon}
