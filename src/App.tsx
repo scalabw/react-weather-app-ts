@@ -12,7 +12,6 @@ import { checkEndOfDay } from './helpers/time';
 
 const App: React.FC = () => {
   const [fiveDaysWeatherData, setFiveDaysWeatherData] = useState()
-  //const [currentDayWeatherData, setCurrentDayWeatherData] = useState()
   const [city, setCity] = useState('Paris');
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -24,9 +23,7 @@ const App: React.FC = () => {
 
       try {
         const fiveDaysWeatherData = await getFiveDaysWeatherData(city);
-        //const currentDayWeatherData = await getCurrentDayWeatherData(city)
         setFiveDaysWeatherData(fiveDaysWeatherData);
-        //setCurrentDayWeatherData(currentDayWeatherData);
         setIsError(false);
       } catch (error) {
         setFiveDaysWeatherData({});
