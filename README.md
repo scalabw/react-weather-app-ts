@@ -1,4 +1,6 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+This project is Project is a Website Made with React, typescript, Hooks, Axios, react-animated-weather and shards-react.
+you can search for a city and it will provide you the weather for this city for the today and the 4 next days.
 
 ## Available Scripts
 
