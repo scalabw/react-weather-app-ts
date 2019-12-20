@@ -26,3 +26,16 @@ export const getWeatherIcone = (weatherType) => {
       return ''
   }
 }
+
+export const getRainyDays = (fiveDaysWeatherData) => {
+  if (!fiveDaysWeatherData) return []
+  return fiveDaysWeatherData.list.filter(weatherData => weatherData.weather[0].main === APIWEATHER.RAIN)
+}
+export const getSunnyDays = (fiveDaysWeatherData) => {
+  if (!fiveDaysWeatherData) return []
+  return fiveDaysWeatherData.list.filter(weatherData => weatherData.weather[0].main === APIWEATHER.CLEAR)
+}
+export const getCloudyDays = (fiveDaysWeatherData) => {
+  if (!fiveDaysWeatherData) return []
+  return fiveDaysWeatherData.list.filter(weatherData => weatherData.weather[0].main === APIWEATHER.CLOUDS)
+}
