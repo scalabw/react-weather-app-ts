@@ -17,9 +17,7 @@ import "shards-ui/dist/css/shards.min.css";
 import { Days } from './constants/days';
 import { WeatherData } from './types/weather';
 import { checkEndOfDay } from './helpers/time';
-import { getRainyDays, getCloudyDays, getSunnyDays } from './helpers/weather';
-
-
+import { getTypesOfWeather, getWeatherStats } from './helpers/weather';
 
 const itemInRawLength = 4;
 const App: React.FC = () => {
@@ -36,7 +34,6 @@ const App: React.FC = () => {
       try {
         const fiveDaysWeatherData = await getFiveDaysWeatherData(city);
         setFiveDaysWeatherData(fiveDaysWeatherData);
-        console.log(fiveDaysWeatherData)
         setIsError(false);
       } catch (error) {
         console.error(error)
@@ -48,30 +45,26 @@ const App: React.FC = () => {
     fetchData();
   }, [city]);
 
-  const getChartOptions = () => ({
+  const getChartOptions = (weatherDataList) => ({
     chart: {
       id: "basic-bar"
     },
     xaxis: {
-      categories: ["Rain", "Cloud", "Sun"]
+      categories: getTypesOfWeather(weatherDataList)
     }
   })
 
-  const getChartSeries = (): any => (
-    [{
-      name: "rain",
-      data: [fiveDaysWeatherData ? getRainyDays(fiveDaysWeatherData).length : 0]
-    },
-    {
-      name: "cloud",
-      data: [fiveDaysWeatherData ? getCloudyDays(fiveDaysWeatherData).length : 0]
-    },
-    {
-      name: "sun",
-      data: [fiveDaysWeatherData ? getSunnyDays(fiveDaysWeatherData).length : 0]
-    },
-    ])
+  const getChartSeries = (weatherDataList): any => {
+    const weatherTypes = getTypesOfWeather(weatherDataList);
 
+    const weatherStats = getWeatherStats(weatherTypes, weatherDataList)
+    return (
+      weatherTypes.map((weatherType, index) => ({
+        name: weatherType,
+        data: [weatherStats[index]]
+      }))
+    )
+  }
 
   const renderWeatherCards = (list: WeatherData[]) => {
     const fiveDays: JSX.Element[] = [];
@@ -96,15 +89,14 @@ const App: React.FC = () => {
     return fiveDays
   }
 
-  const renderweatherStats = () => (
-    <Card className="mt-2 mb-2" style={{ opacity: 0.89 }}>
+  const renderWeatherStats = (weatherDataList) => (
+    <Card className="mt-2 mb-2 w-100" style={{ opacity: 0.89 }}>
       <Chart
-        options={getChartOptions()}
-        series={getChartSeries()}
+        options={getChartOptions(weatherDataList)}
+        series={getChartSeries(weatherDataList)}
         type="bar"
       /> </Card>
   )
-
 
   return (
     <div className="App bg-gradient-info">
@@ -129,7 +121,7 @@ const App: React.FC = () => {
       ) : (<Container className="mt-1 pb-2 h-100">
         <Row>
           {fiveDaysWeatherData && fiveDaysWeatherData!.list && renderWeatherCards(fiveDaysWeatherData.list)}
-          {fiveDaysWeatherData && fiveDaysWeatherData!.list && renderweatherStats()
+          {fiveDaysWeatherData && fiveDaysWeatherData!.list && renderWeatherStats(fiveDaysWeatherData.list)
           }
         </Row >
       </Container>

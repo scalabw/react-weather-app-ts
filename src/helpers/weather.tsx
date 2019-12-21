@@ -39,3 +39,16 @@ export const getCloudyDays = (fiveDaysWeatherData) => {
   if (!fiveDaysWeatherData) return []
   return fiveDaysWeatherData.list.filter(weatherData => weatherData.weather[0].main === APIWEATHER.CLOUDS)
 }
+
+export const getTypesOfWeather = (weatherDataList) => {
+  return [...new Set(weatherDataList.map((weatherItemData) => weatherItemData.weather[0].main))]
+}
+export const getWeatherStats = (typesOfWeather, weatherDataList) => {
+  if (!typesOfWeather || !weatherDataList) return []
+  return typesOfWeather.map(weatherType => {
+    let occurences = 0;
+    weatherDataList.map(weatherData => weatherData.weather[0].main === weatherType && occurences++)
+    return occurences
+  })
+}
+
