@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, FormInput, Card, CardHeader } from "shards-react";
+import { Container, Row, Col, FormInput, Card, CardHeader, FormSelect } from "shards-react";
 
 // Import API Calls
 import { getFiveDaysWeatherData } from './API';
@@ -13,18 +13,24 @@ import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "shards-ui/dist/css/shards.min.css";
 
-//import Constans, Types and Helper Functions
+// Import Constans, Types and Helper Functions
 import { Days } from './constants/days';
 import { WeatherData } from './types/weather';
 import { checkEndOfDay } from './helpers/time';
-import { getTypesOfWeather, getWeatherStats } from './helpers/weather';
+import { getMainTypesOfWeather, getMainWeatherStats } from './helpers/weather';
 
+// Items per Raw
 const itemInRawLength = 4;
+
+// Select Weather types values
+const weatherForecastTypes = ['Weather Forecast', 'Stats']
+
 const App: React.FC = () => {
   const [fiveDaysWeatherData, setFiveDaysWeatherData] = useState()
   const [city, setCity] = useState('Paris');
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [weatherForecastType, setWeatherForecastType] = useState(weatherForecastTypes[0])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,14 +56,35 @@ const App: React.FC = () => {
       id: "basic-bar"
     },
     xaxis: {
-      categories: getTypesOfWeather(weatherDataList)
+      categories: getMainTypesOfWeather(weatherDataList)
     }
   })
 
   const getChartSeries = (weatherDataList): any => {
-    const weatherTypes = getTypesOfWeather(weatherDataList);
+    const weatherTypes = getMainTypesOfWeather(weatherDataList);
 
-    const weatherStats = getWeatherStats(weatherTypes, weatherDataList)
+    const weatherStats = getMainWeatherStats(weatherTypes, weatherDataList)
+    return (
+      weatherTypes.map((weatherType, index) => ({
+        name: weatherType,
+        data: [weatherStats[index]]
+      }))
+    )
+  }
+
+  const getPreciseChartOptions = (weatherDataList) => ({
+    chart: {
+      id: "basic-bar"
+    },
+    xaxis: {
+      categories: getMainTypesOfWeather(weatherDataList, true)
+    }
+  })
+
+  const getPreciseChartSeries = (weatherDataList): any => {
+    const weatherTypes = getMainTypesOfWeather(weatherDataList, true);
+
+    const weatherStats = getMainWeatherStats(weatherTypes, weatherDataList, true)
     return (
       weatherTypes.map((weatherType, index) => ({
         name: weatherType,
@@ -90,12 +117,20 @@ const App: React.FC = () => {
   }
 
   const renderWeatherStats = (weatherDataList) => (
-    <Card className="mt-2 mb-2 w-100" style={{ opacity: 0.89 }}>
-      <Chart
-        options={getChartOptions(weatherDataList)}
-        series={getChartSeries(weatherDataList)}
-        type="bar"
-      /> </Card>
+    <>
+      <Card className="mt-2 mb-2 w-100" style={{ opacity: 0.89 }}>
+        <Chart
+          options={getChartOptions(weatherDataList)}
+          series={getChartSeries(weatherDataList)}
+          type="bar"
+        /> </Card>
+      <Card className="mt-2 mb-2 w-100" style={{ opacity: 0.89 }}>
+        <Chart
+          options={getPreciseChartOptions(weatherDataList)}
+          series={getPreciseChartSeries(weatherDataList)}
+          type="bar"
+        /> </Card>
+    </>
   )
 
   return (
@@ -111,6 +146,12 @@ const App: React.FC = () => {
             }
           }}
         />
+        <FormSelect onChange={e => setWeatherForecastType(e.target.value)} style={{ opacity: 0.89 }}
+        >
+          {
+            weatherForecastTypes.map((weatherForecastType, index) => <option value={weatherForecastType} key={index}>{weatherForecastType}</option>)
+          }
+        </FormSelect>
       </Container>
       {
         !fiveDaysWeatherData && <Container className="bg-gradient-info" style={{ height: '100px' }} />
@@ -120,8 +161,8 @@ const App: React.FC = () => {
         <Card className="mt-2 mb-2 " style={{ opacity: 0.89 }}> <CardHeader><h2>Loading ...</h2></CardHeader></Card>
       ) : (<Container className="mt-1 pb-2 h-100">
         <Row>
-          {fiveDaysWeatherData && fiveDaysWeatherData!.list && renderWeatherCards(fiveDaysWeatherData.list)}
-          {fiveDaysWeatherData && fiveDaysWeatherData!.list && renderWeatherStats(fiveDaysWeatherData.list)
+          {fiveDaysWeatherData && fiveDaysWeatherData!.list && weatherForecastType === 'Weather Forecast' && renderWeatherCards(fiveDaysWeatherData.list)}
+          {fiveDaysWeatherData && fiveDaysWeatherData!.list && weatherForecastType === 'Stats' && renderWeatherStats(fiveDaysWeatherData.list)
           }
         </Row >
       </Container>
