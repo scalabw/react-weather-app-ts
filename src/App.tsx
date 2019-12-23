@@ -6,7 +6,7 @@ import { getFiveDaysWeatherData } from './API';
 
 // Import Components
 import WeatherCard from './components/WeatherCard';
-import Chart from "react-apexcharts";
+import WeatherStats from './components/WeathersStats';
 
 // Import CSS files
 import './App.css';
@@ -17,7 +17,6 @@ import "shards-ui/dist/css/shards.min.css";
 import { Days } from './constants/days';
 import { WeatherData } from './types/weather';
 import { checkEndOfDay } from './helpers/time';
-import { getTypesOfWeather, getWeatherStats } from './helpers/weather';
 
 // Items per Raw
 const itemInRawLength = 4;
@@ -51,26 +50,6 @@ const App: React.FC = () => {
     fetchData();
   }, [city]);
 
-  const getChartOptions = (weatherDataList, preciseWeatherType = false) => ({
-    chart: {
-      id: "basic-bar"
-    },
-    xaxis: {
-      categories: getTypesOfWeather(weatherDataList, preciseWeatherType)
-    }
-  })
-
-  const getChartSeries = (weatherDataList, preciseWeatherType = false): any => {
-    const weatherTypes = getTypesOfWeather(weatherDataList, preciseWeatherType);
-    const weatherStats = getWeatherStats(weatherTypes, weatherDataList, preciseWeatherType);
-
-    return (
-      [{
-        name: "",
-        data: weatherStats
-      }]
-    )
-  }
 
   const renderWeatherCards = (list: WeatherData[]) => {
     const fiveDays: JSX.Element[] = [];
@@ -95,22 +74,7 @@ const App: React.FC = () => {
     return fiveDays
   }
 
-  const renderWeatherStats = (weatherDataList) => (
-    <>
-      <Card className="mt-2 mb-2 w-100" style={{ opacity: 0.89 }}>
-        <Chart
-          options={getChartOptions(weatherDataList)}
-          series={getChartSeries(weatherDataList)}
-          type="bar"
-        /> </Card>
-      <Card className="mt-2 mb-2 w-100" style={{ opacity: 0.89 }}>
-        <Chart
-          options={getChartOptions(weatherDataList, true)}
-          series={getChartSeries(weatherDataList, true)}
-          type="bar"
-        /> </Card>
-    </>
-  )
+  const selectOptions = weatherForecastTypes.map((weatherForecastType, index) => <option value={weatherForecastType} key={index}>{weatherForecastType}</option>)
 
   return (
     <div className="App bg-gradient-info">
@@ -127,9 +91,7 @@ const App: React.FC = () => {
         />
         <FormSelect onChange={e => setWeatherForecastType(e.target.value)} style={{ opacity: 0.89 }}
         >
-          {
-            weatherForecastTypes.map((weatherForecastType, index) => <option value={weatherForecastType} key={index}>{weatherForecastType}</option>)
-          }
+          {selectOptions}
         </FormSelect>
       </Container>
       {
@@ -141,7 +103,7 @@ const App: React.FC = () => {
       ) : (<Container className="mt-1 pb-2 h-100">
         <Row>
           {fiveDaysWeatherData && fiveDaysWeatherData!.list && weatherForecastType === 'Weather Forecast' && renderWeatherCards(fiveDaysWeatherData.list)}
-          {fiveDaysWeatherData && fiveDaysWeatherData!.list && weatherForecastType === 'Stats' && renderWeatherStats(fiveDaysWeatherData.list)
+          {fiveDaysWeatherData && fiveDaysWeatherData!.list && weatherForecastType === 'Stats' && <WeatherStats weatherDataList={fiveDaysWeatherData.list} />
           }
         </Row >
       </Container>
