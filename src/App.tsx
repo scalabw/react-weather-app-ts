@@ -17,7 +17,7 @@ import "shards-ui/dist/css/shards.min.css";
 import { Days } from './constants/days';
 import { WeatherData } from './types/weather';
 import { checkEndOfDay } from './helpers/time';
-import { getMainTypesOfWeather, getMainWeatherStats } from './helpers/weather';
+import { getTypesOfWeather, getWeatherStats } from './helpers/weather';
 
 // Items per Raw
 const itemInRawLength = 4;
@@ -56,19 +56,19 @@ const App: React.FC = () => {
       id: "basic-bar"
     },
     xaxis: {
-      categories: getMainTypesOfWeather(weatherDataList)
+      categories: getTypesOfWeather(weatherDataList)
     }
   })
 
   const getChartSeries = (weatherDataList): any => {
-    const weatherTypes = getMainTypesOfWeather(weatherDataList);
+    const weatherTypes = getTypesOfWeather(weatherDataList);
+    const weatherStats = getWeatherStats(weatherTypes, weatherDataList);
 
-    const weatherStats = getMainWeatherStats(weatherTypes, weatherDataList)
     return (
-      weatherTypes.map((weatherType, index) => ({
-        name: weatherType,
-        data: [weatherStats[index]]
-      }))
+      [{
+        name: "",
+        data: weatherStats
+      }]
     )
   }
 
@@ -77,19 +77,19 @@ const App: React.FC = () => {
       id: "basic-bar"
     },
     xaxis: {
-      categories: getMainTypesOfWeather(weatherDataList, true)
+      categories: getTypesOfWeather(weatherDataList, true)
     }
   })
 
   const getPreciseChartSeries = (weatherDataList): any => {
-    const weatherTypes = getMainTypesOfWeather(weatherDataList, true);
+    const weatherTypes = getTypesOfWeather(weatherDataList, true);
 
-    const weatherStats = getMainWeatherStats(weatherTypes, weatherDataList, true)
+    const weatherStats = getWeatherStats(weatherTypes, weatherDataList, true);
     return (
-      weatherTypes.map((weatherType, index) => ({
-        name: weatherType,
-        data: [weatherStats[index]]
-      }))
+      [{
+        name: "",
+        data: weatherStats
+      }]
     )
   }
 

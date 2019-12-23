@@ -4,7 +4,7 @@ import axios from "axios";
 export const APIKey: string = "d146d2c1e619c5bd4411afef986e631c";
 
 interface ServerData {
-  data: any
+  list: []
 }
 
 // Get the data for the 5 next days based on the city queried
