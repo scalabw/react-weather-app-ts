@@ -51,40 +51,19 @@ const App: React.FC = () => {
     fetchData();
   }, [city]);
 
-  const getChartOptions = (weatherDataList) => ({
+  const getChartOptions = (weatherDataList, preciseWeatherType = false) => ({
     chart: {
       id: "basic-bar"
     },
     xaxis: {
-      categories: getTypesOfWeather(weatherDataList)
+      categories: getTypesOfWeather(weatherDataList, preciseWeatherType)
     }
   })
 
-  const getChartSeries = (weatherDataList): any => {
-    const weatherTypes = getTypesOfWeather(weatherDataList);
-    const weatherStats = getWeatherStats(weatherTypes, weatherDataList);
+  const getChartSeries = (weatherDataList, preciseWeatherType = false): any => {
+    const weatherTypes = getTypesOfWeather(weatherDataList, preciseWeatherType);
+    const weatherStats = getWeatherStats(weatherTypes, weatherDataList, preciseWeatherType);
 
-    return (
-      [{
-        name: "",
-        data: weatherStats
-      }]
-    )
-  }
-
-  const getPreciseChartOptions = (weatherDataList) => ({
-    chart: {
-      id: "basic-bar"
-    },
-    xaxis: {
-      categories: getTypesOfWeather(weatherDataList, true)
-    }
-  })
-
-  const getPreciseChartSeries = (weatherDataList): any => {
-    const weatherTypes = getTypesOfWeather(weatherDataList, true);
-
-    const weatherStats = getWeatherStats(weatherTypes, weatherDataList, true);
     return (
       [{
         name: "",
@@ -126,8 +105,8 @@ const App: React.FC = () => {
         /> </Card>
       <Card className="mt-2 mb-2 w-100" style={{ opacity: 0.89 }}>
         <Chart
-          options={getPreciseChartOptions(weatherDataList)}
-          series={getPreciseChartSeries(weatherDataList)}
+          options={getChartOptions(weatherDataList, true)}
+          series={getChartSeries(weatherDataList, true)}
           type="bar"
         /> </Card>
     </>
