@@ -79,7 +79,7 @@ const App: React.FC = () => {
   return (
     <div className="App bg-gradient-info">
       <Container className="w-25">
-        <FormInput placeholder="City Name" className="mb-2 pt-2" type="text"
+        <FormInput placeholder="City Name" className="mb-2 mt-2" type="text"
           value={city}
           onChange={event => setCity(event.target.value)}
           style={{ opacity: 0.89 }}
@@ -100,7 +100,7 @@ const App: React.FC = () => {
       {isError && <Card className="mt-2 mb-2" style={{ opacity: 0.89 }}> <CardHeader><h2>City not found</h2></CardHeader></Card>}
       {isLoading ? (
         <Card className="mt-2 mb-2 " style={{ opacity: 0.89 }}> <CardHeader><h2>Loading ...</h2></CardHeader></Card>
-      ) : (<Container className="mt-1 pb-2 h-100">
+      ) : (<Container className=" h-100">
         <Row>
           {fiveDaysWeatherData && fiveDaysWeatherData!.list && weatherForecastType === 'Weather Forecast' && renderWeatherCards(fiveDaysWeatherData.list)}
           {fiveDaysWeatherData && fiveDaysWeatherData!.list && weatherForecastType === 'Stats' && <WeatherStats weatherDataList={fiveDaysWeatherData.list} />
