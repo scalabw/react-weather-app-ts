@@ -10,6 +10,10 @@ interface Iprops {
 
 const WeatherStats = (props: Iprops) => {
   const { weatherDataList } = props;
+
+  // return null if there is no weatherData in the list
+  if (!weatherDataList) return null
+
   const getChartOptions = (weatherDataList, preciseWeatherType = false) => ({
     chart: {
       id: "basic-bar"

@@ -51,10 +51,11 @@ const App: React.FC = () => {
   }, [city]);
 
 
-  const renderWeatherCards = (list: WeatherData[]) => {
+  const renderWeatherCards = (list: WeatherData[] = []) => {
     const fiveDays: JSX.Element[] = [];
     let row: JSX.Element[] = [];
     let daily: JSX.Element[] = [];
+
 
     for (let index = 0; index < list.length; index++) {
       const isLastWeatherForecastOfDay = checkEndOfDay(new Date(list[index].dt_txt));
@@ -75,6 +76,7 @@ const App: React.FC = () => {
   }
 
   const selectOptions = weatherForecastTypes.map((weatherForecastType, index) => <option value={weatherForecastType} key={index}>{weatherForecastType}</option>)
+  const weatherDataList = fiveDaysWeatherData && fiveDaysWeatherData.list;
 
   return (
     <div className="App bg-gradient-info">
@@ -102,8 +104,8 @@ const App: React.FC = () => {
         <Card className="mt-2 mb-2 " style={{ opacity: 0.89 }}> <CardHeader><h2>Loading ...</h2></CardHeader></Card>
       ) : (<Container className=" h-100">
         <Row>
-          {fiveDaysWeatherData && fiveDaysWeatherData!.list && weatherForecastType === 'Weather Forecast' && renderWeatherCards(fiveDaysWeatherData.list)}
-          {fiveDaysWeatherData && fiveDaysWeatherData!.list && weatherForecastType === 'Stats' && <WeatherStats weatherDataList={fiveDaysWeatherData.list} />
+          {weatherForecastType === 'Weather Forecast' && renderWeatherCards(weatherDataList)}
+          {weatherForecastType === 'Stats' && <WeatherStats weatherDataList={weatherDataList} />
           }
         </Row >
       </Container>
