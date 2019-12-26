@@ -3,9 +3,10 @@ import { Card } from "shards-react";
 import Chart from "react-apexcharts";
 
 import { getTypesOfWeather, getWeatherStats } from '../helpers/weather';
+import { IWeatherForecastListItem } from '../types/weather';
 
 interface Iprops {
-  weatherDataList: []
+  weatherDataList: IWeatherForecastListItem[]
 }
 
 const WeatherStats = (props: Iprops) => {
@@ -14,7 +15,7 @@ const WeatherStats = (props: Iprops) => {
   // return null if there is no weatherData in the list
   if (!weatherDataList) return null
 
-  const getChartOptions = (weatherDataList, preciseWeatherType = false) => ({
+  const getChartOptions = (weatherDataList: IWeatherForecastListItem[], preciseWeatherType = false) => ({
     chart: {
       id: "basic-bar"
     },
@@ -23,7 +24,7 @@ const WeatherStats = (props: Iprops) => {
     }
   })
 
-  const getChartSeries = (weatherDataList, preciseWeatherType = false): any => {
+  const getChartSeries = (weatherDataList: IWeatherForecastListItem[], preciseWeatherType = false): { name: string, data: number }[] => {
     const weatherTypes = getTypesOfWeather(weatherDataList, preciseWeatherType);
     const weatherStats = getWeatherStats(weatherTypes, weatherDataList, preciseWeatherType);
 

@@ -1,6 +1,6 @@
-import { APIWEATHER, ICONEWEATHER } from '../types/weather'
+import { APIWEATHER, ICONEWEATHER, IWeatherForecastListItem } from '../types/weather'
 
-export const getWeatherIcone = (weatherType) => {
+export const getWeatherIcone = (weatherType: string) => {
   switch (weatherType) {
     case APIWEATHER.CLOUDS:
       return ICONEWEATHER.CLOUDY
@@ -27,11 +27,11 @@ export const getWeatherIcone = (weatherType) => {
   }
 }
 
-export const getTypesOfWeather = (weatherDataList, preciseWeatherType = false) => {
+export const getTypesOfWeather = (weatherDataList: IWeatherForecastListItem[], preciseWeatherType = false) => {
   return preciseWeatherType ? [...new Set(weatherDataList.map((weatherItemData) => weatherItemData.weather[0].description))]
     : [...new Set(weatherDataList.map((weatherItemData) => weatherItemData.weather[0].main))]
 }
-export const getWeatherStats = (typesOfWeather, weatherDataList, preciseWeatherType = false) => {
+export const getWeatherStats = (typesOfWeather, weatherDataList: IWeatherForecastListItem[], preciseWeatherType = false) => {
   if (!typesOfWeather || !weatherDataList) return []
   return typesOfWeather.map(weatherType => {
     let occurences = 0;

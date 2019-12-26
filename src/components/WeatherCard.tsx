@@ -10,8 +10,15 @@ import {
 import { getFormatedHourAndMinutedFromDate } from '../helpers/time';
 import { getWeatherIcone } from '../helpers/weather';
 
+// Imports Types
+import { IWeatherForecastListItem } from '../types/weather';
+
+interface IProps {
+  weatherData: IWeatherForecastListItem
+}
+
 // this component render all the weather informations provided by the API for a given time
-const WeatherCard = (props: any) => {
+const WeatherCard = (props: IProps) => {
 
   // Props required to render the reactAnimatedWeather Component
   const reactAnimatedWeatherProps = {

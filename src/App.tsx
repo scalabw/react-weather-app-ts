@@ -15,7 +15,7 @@ import "shards-ui/dist/css/shards.min.css";
 
 // Import Constans, Types and Helper Functions
 import { Days } from './constants/days';
-import { WeatherData } from './types/weather';
+import { IWeatherForecastListItem } from './types/weather';
 import { checkEndOfDay } from './helpers/time';
 
 // Items per Raw
@@ -51,7 +51,7 @@ const App: React.FC = () => {
   }, [city]);
 
 
-  const renderWeatherCards = (list: WeatherData[] = []) => {
+  const renderWeatherCards = (list: IWeatherForecastListItem[] = []) => {
     const fiveDays: JSX.Element[] = [];
     let row: JSX.Element[] = [];
     let daily: JSX.Element[] = [];
@@ -91,7 +91,7 @@ const App: React.FC = () => {
             }
           }}
         />
-        <FormSelect onChange={e => setWeatherForecastType(e.target.value)} style={{ opacity: 0.89 }}
+        <FormSelect onChange={(e) => setWeatherForecastType(e.target.value)} style={{ opacity: 0.89 }}
         >
           {selectOptions}
         </FormSelect>
