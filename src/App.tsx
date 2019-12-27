@@ -1,25 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, FormInput, Card, CardHeader, FormSelect } from "shards-react";
+import { Container, Row, FormInput, Card, CardHeader, FormSelect } from "shards-react";
 
 // Import API Calls
 import { getFiveDaysWeatherData } from './API';
 
 // Import Components
-import WeatherCard from './components/WeatherCard';
 import WeatherStats from './components/WeathersStats';
+import WeatherCardList from './components/WeatherCardList';
 
 // Import CSS files
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "shards-ui/dist/css/shards.min.css";
-
-// Import Constans, Types and Helper Functions
-import { Days } from './constants/days';
-import { IWeatherForecastListItem } from './types/weather';
-import { checkEndOfDay } from './helpers/time';
-
-// Items per Raw
-const itemInRawLength = 4;
 
 // Select Weather types values
 const weatherForecastTypes = ['Weather Forecast', 'Stats']
@@ -51,30 +43,6 @@ const App: React.FC = () => {
   }, [city]);
 
 
-  const renderWeatherCards = (list: IWeatherForecastListItem[] = []) => {
-    const fiveDays: JSX.Element[] = [];
-    let row: JSX.Element[] = [];
-    let daily: JSX.Element[] = [];
-
-
-    for (let index = 0; index < list.length; index++) {
-      const isLastWeatherForecastOfDay = checkEndOfDay(new Date(list[index].dt_txt));
-
-      daily.push(<Col key={`Col-${index}`}>
-        <WeatherCard weatherData={list[index]} />
-      </Col>)
-      if (daily.length === itemInRawLength || isLastWeatherForecastOfDay) {
-        row.push(<Row key={`Row-${index}`}>{daily}</Row>)
-        daily = []
-      }
-      if (isLastWeatherForecastOfDay) {
-        fiveDays.push(<Card className="mt-2 mb-2 w-100" style={{ opacity: 0.89 }} key={`Card-${index}`}> <CardHeader><h2>{Days[fiveDays.length]}</h2></CardHeader>{row}</Card>)
-        row = []
-      }
-    }
-    return fiveDays
-  }
-
   const selectOptions = weatherForecastTypes.map((weatherForecastType, index) => <option value={weatherForecastType} key={index}>{weatherForecastType}</option>)
   const weatherDataList = fiveDaysWeatherData && fiveDaysWeatherData.list;
 
@@ -101,10 +69,10 @@ const App: React.FC = () => {
       }
       {isError && <Card className="mt-2 mb-2" style={{ opacity: 0.89 }}> <CardHeader><h2>City not found</h2></CardHeader></Card>}
       {isLoading ? (
-        <Card className="mt-2 mb-2 " style={{ opacity: 0.89 }}> <CardHeader><h2>Loading ...</h2></CardHeader></Card>
-      ) : (<Container className=" h-100">
+        <Card className="mt-2 mb-2" style={{ opacity: 0.89 }}> <CardHeader><h2>Loading ...</h2></CardHeader></Card>
+      ) : (<Container className="h-100">
         <Row>
-          {weatherForecastType === 'Weather Forecast' && renderWeatherCards(weatherDataList)}
+          {weatherForecastType === 'Weather Forecast' && <WeatherCardList weatherDataList={weatherDataList} />}
           {weatherForecastType === 'Stats' && <WeatherStats weatherDataList={weatherDataList} />
           }
         </Row >
